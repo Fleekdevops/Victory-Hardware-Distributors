@@ -1160,6 +1160,70 @@ main { display: block; }
 @media (hover: hover) { .project-card:hover .cat-arrow { opacity: 1; } }
 .section-header p strong { color: var(--primary); }
 
+/* ---------- phone fixes: tabs, stat strip, leadership, contact ---------- */
+.nb { white-space: nowrap; }
+.quick-tabs { display: none; }
+.strip-item { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.strip-item span { white-space: nowrap; }
+.ceo-content > *, .about-content > * { min-width: 0; }
+@media (max-width: 1024px) { .ceo-content, .about-content { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 768px) {
+    .quick-tabs { display: flex; gap: 8px; overflow-x: auto; padding: 8px 16px 10px; background: #fff; border-top: 1px solid var(--border); scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+    .quick-tabs::-webkit-scrollbar { display: none; }
+    .quick-tabs a { flex: 0 0 auto; padding: 8px 16px; border-radius: 99px; font-size: 14px; font-weight: 600; color: var(--primary); background: var(--off-white); border: 1px solid var(--border); text-decoration: none; }
+    .quick-tabs a.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+    .strip-inner { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .strip-item { padding: 18px 4px; min-height: 84px; }
+    .strip-item:nth-child(3) { border-right: 0; }
+    .strip-item b { font-size: 22px; line-height: 1.1; }
+    .strip-item span { font-size: 12px; margin-top: 4px; }
+    .ceo-section .section-inner { padding-left: 20px; padding-right: 20px; }
+    .ceo-content { grid-template-columns: minmax(0, 1fr); gap: 32px; justify-items: center; }
+    .ceo-image-wrapper, .ceo-info { width: 100%; max-width: 100%; margin: 0 auto; text-align: center; }
+    .ceo-info h3 { font-size: 26px; }
+    .ceo-title { justify-content: center; flex-wrap: wrap; text-align: center; }
+    .ceo-bio { text-align: center; overflow-wrap: break-word; }
+    .ceo-quote { margin-left: 0; margin-right: 0; padding: 16px 14px; border-radius: var(--radius); }
+    .ceo-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+    .ceo-stat-number { font-size: 20px; }
+    .ceo-stat-label { font-size: 11px; }
+    .footer-contact-item { width: min(320px, 100%); margin-left: auto; margin-right: auto; justify-content: flex-start; align-items: flex-start; text-align: left; }
+    .contact-card p { line-height: 1.7; }
+}
+/* product details dialog */
+.pdlg { border: 0; padding: 0; border-radius: 20px; width: min(860px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); overflow: auto; background: #fff; color: var(--text); box-shadow: 0 30px 80px rgba(8,40,50,.45); }
+.pdlg::backdrop { background: rgba(8,40,50,.68); backdrop-filter: blur(3px); }
+.pdlg[open] { animation: pdIn .3s cubic-bezier(.2,.7,.2,1); }
+@keyframes pdIn { from { opacity: 0; transform: translateY(18px) scale(.98); } to { opacity: 1; transform: none; } }
+.pdlg-close { position: absolute; top: 12px; right: 12px; z-index: 3; width: 40px; height: 40px; border: 0; border-radius: 50%; background: #fff; color: var(--primary); font-size: 20px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,.2); }
+.pdlg-close:hover { background: var(--orange); }
+.pdlg-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); }
+.pdlg-media { background: var(--off-white); padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+.pdlg-media #pdMain { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 14px; background: #fff; }
+.pdlg-thumbs { display: flex; gap: 8px; }
+.pdlg-thumbs button { width: 56px; height: 56px; padding: 0; border: 2px solid transparent; border-radius: 10px; overflow: hidden; cursor: pointer; background: #fff; opacity: .7; }
+.pdlg-thumbs button.on { border-color: var(--orange); opacity: 1; }
+.pdlg-thumbs img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pdlg-info { padding: 28px 28px 26px; text-align: left; }
+.pdlg-cat { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent-ink); }
+.pdlg-info h3 { font-size: 22px; line-height: 1.25; font-weight: 800; color: var(--primary); margin: 6px 0 8px; letter-spacing: -.3px; padding-right: 36px; }
+.pdlg-price { font-size: 18px; font-weight: 800; color: var(--accent-ink); margin-bottom: 12px; }
+.pdlg-desc { font-size: 15px; line-height: 1.7; color: var(--text); margin-bottom: 16px; }
+.pdlg-info h4 { font-size: 13px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: var(--text-light); margin-bottom: 8px; }
+.pdlg-uses { list-style: none; display: grid; gap: 8px; margin-bottom: 16px; padding: 0; }
+.pdlg-uses li { position: relative; padding-left: 24px; font-size: 14.5px; line-height: 1.5; }
+.pdlg-uses li::before { content: ""; position: absolute; left: 2px; top: 6px; width: 10px; height: 10px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 0 3px var(--orange-light); }
+.pdlg-spec { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.pdlg-spec span { font-size: 12.5px; font-weight: 600; padding: 6px 12px; border-radius: 99px; background: var(--off-white); color: var(--primary); border: 1px solid var(--border); }
+.pdlg-cta { width: 100%; justify-content: center; text-decoration: none; }
+@media (max-width: 768px) {
+    .pdlg { border-radius: 18px; }
+    .pdlg-body { grid-template-columns: minmax(0, 1fr); }
+    .pdlg-media { padding: 14px 14px 10px; }
+    .pdlg-media #pdMain { aspect-ratio: 4 / 3; }
+    .pdlg-info { padding: 20px 18px 22px; }
+}
+
 .view[hidden] { display: none; }
 .view.enter { animation: viewIn .5s cubic-bezier(.2,.7,.2,1) both; }
 @keyframes viewIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
@@ -1231,9 +1295,9 @@ main { display: block; }
     </div>
 </section>
 <section class="stat-strip"><div class="strip-inner">
-    <div class="strip-item"><b data-count="2500" data-suffix="+">2,500+</b><span>Products available</span></div>
+    <div class="strip-item"><b data-count="2500" data-suffix="+">2,500+</b><span>Products</span></div>
     <div class="strip-item"><b data-count="15" data-suffix="+">15+</b><span>Years in Kenya</span></div>
-    <div class="strip-item"><b data-count="5000" data-suffix="+">5,000+</b><span>Happy customers</span></div>
+    <div class="strip-item"><b data-count="5000" data-suffix="+">5,000+</b><span>Happy clients</span></div>
     <a class="strip-cta" href="https://wa.me/254723331505"><i class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg></i><span>Chat on WhatsApp</span></a>
 </div></section>
 <section class="section">
@@ -1916,7 +1980,7 @@ main { display: block; }
 </div>
 <div class="view" data-view="contact" data-title="Contact — Victory Hardware & Distributors" hidden>
 <section class="page-hero"><div class="container"><nav class="crumbs" aria-label="Breadcrumb"><a href="#home">Home</a><span>/</span><span>Contact</span></nav><h1>Contact Us</h1><p>Quotes, deliveries and questions answered fast.</p></div></section>
-<section class="section"><div class="section-inner"><div class="section-header"><span class="section-label">Get in touch</span><h2>We're here to help</h2><p>Send your list on WhatsApp, call us or visit the yard.</p></div><div class="contact-grid"><div class="contact-card"><i class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pin"/></svg></i><h3>Visit us</h3><p>Kikuyu, Thogoto, Kamangu Road, Kenya</p></div><div class="contact-card"><i class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg></i><h3>Call us</h3><p>+254 723 331 505</p></div><div class="contact-card"><i class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg></i><h3>Call us</h3><p>+254 729 329 316</p></div><div class="contact-card"><i class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg></i><h3>WhatsApp</h3><p>WhatsApp: +254 723 331 505 / +254 729 329 316</p></div><div class="contact-card"><i class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-mail"/></svg></i><h3>Email us</h3><p>info@victoryHardware254.com</p></div><div class="contact-card"><i class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-mobile"/></svg></i><h3>M-Pesa</h3><p>M-Pesa: 0723331505</p></div><div class="contact-card"><i class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-clock"/></svg></i><h3>Opening hours</h3><p>Mon–Fri: 7AM–6PM | Sat: 8AM–4PM (EAT)</p></div></div><div class="more-wrap"><a class="btn-primary" href="https://wa.me/254723331505"><i class="ic" style="margin-right:10px;font-size:20px"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg></i>Message us on WhatsApp</a></div></div></section><section class="quotation-banner">
+<section class="section"><div class="section-inner"><div class="section-header"><span class="section-label">Get in touch</span><h2>We're here to help</h2><p>Send your list on WhatsApp, call us or visit the yard.</p></div><div class="contact-grid"><div class="contact-card"><i class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pin"/></svg></i><h3>Visit us</h3><p>Kikuyu, Thogoto, Kamangu Road, Kenya</p></div><div class="contact-card"><i class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg></i><h3>Call us</h3><p><span class="nb">+254 723 331 505</span></p></div><div class="contact-card"><i class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg></i><h3>Call us</h3><p><span class="nb">+254 729 329 316</span></p></div><div class="contact-card"><i class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg></i><h3>WhatsApp</h3><p>WhatsApp: <span class="nb">+254 723 331 505</span><br><span class="nb">+254 729 329 316</span></p></div><div class="contact-card"><i class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-mail"/></svg></i><h3>Email us</h3><p>info@victoryHardware254.com</p></div><div class="contact-card"><i class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-mobile"/></svg></i><h3>M-Pesa</h3><p>M-Pesa: 0723331505</p></div><div class="contact-card"><i class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-clock"/></svg></i><h3>Opening hours</h3><p>Mon–Fri: 7AM–6PM<br>Sat: 8AM–4PM (EAT)</p></div></div><div class="more-wrap"><a class="btn-primary" href="https://wa.me/254723331505"><i class="ic" style="margin-right:10px;font-size:20px"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg></i>Message us on WhatsApp</a></div></div></section><section class="quotation-banner">
 <div class="quotation-inner">
 <div class="quotation-text">
 <h2>Planning a Large Project?</h2>
@@ -2050,15 +2114,15 @@ main { display: block; }
 </div>
 <div class="footer-contact-item">
 <i class="ic"><svg aria-hidden="true" viewbox="0 0 24 24"><use href="#i-phone"></use></svg></i>
-<span>+254 723 331 505</span>
+<span><span class="nb">+254 723 331 505</span></span>
 </div>
 <div class="footer-contact-item">
 <i class="ic"><svg aria-hidden="true" viewbox="0 0 24 24"><use href="#i-phone"></use></svg></i>
-<span>+254 729 329 316</span>
+<span><span class="nb">+254 729 329 316</span></span>
 </div>
 <div class="footer-contact-item">
 <i class="ic"><svg aria-hidden="true" viewbox="0 0 24 24"><use href="#i-wa"></use></svg></i>
-<span>WhatsApp: +254 723 331 505 / +254 729 329 316</span>
+<span>WhatsApp: <span class="nb">+254 723 331 505</span><br><span class="nb">+254 729 329 316</span></span>
 </div>
 <div class="footer-contact-item">
 <i class="ic"><svg aria-hidden="true" viewbox="0 0 24 24"><use href="#i-mail"></use></svg></i>
@@ -2070,7 +2134,7 @@ main { display: block; }
 </div>
 <div class="footer-contact-item">
 <i class="ic"><svg aria-hidden="true" viewbox="0 0 24 24"><use href="#i-clock"></use></svg></i>
-<span>Mon–Fri: 7AM–6PM | Sat: 8AM–4PM (EAT)</span>
+<span>Mon–Fri: 7AM–6PM<br>Sat: 8AM–4PM (EAT)</span>
 </div>
 </div>
 </div>
@@ -2089,6 +2153,14 @@ main { display: block; }
   const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* quick page tabs (shown on phones) */
+  const hdr = $('.header'), navLinks = $$('.nav-menu a');
+  if (hdr && navLinks.length) {
+    const qt = document.createElement('nav'); qt.className = 'quick-tabs'; qt.setAttribute('aria-label', 'Quick page links');
+    qt.innerHTML = navLinks.map(a => '<a href="' + a.getAttribute('href') + '"' + (a.classList.contains('active') ? ' class="active"' : '') + '>' + a.textContent.trim() + '</a>').join('');
+    hdr.appendChild(qt);
+  }
+
 
   /* views (one file, many pages) */
   const views = $$('.view'), names = views.map(v => v.dataset.view);
@@ -2096,7 +2168,8 @@ main { display: block; }
   const go = (n, push = true) => {
     if (!names.includes(n)) n = 'home';
     views.forEach(v => { v.hidden = v.dataset.view !== n; });
-    $$('.nav-menu a').forEach(a => { const on = a.getAttribute('href') === '#' + n; a.classList.toggle('active', on); if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+    $$('.nav-menu a, .quick-tabs a').forEach(a => { const on = a.getAttribute('href') === '#' + n; a.classList.toggle('active', on); if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+    const act = $('.quick-tabs a.active'), qtb = $('.quick-tabs'); if (act && qtb) qtb.scrollTo({ left: act.offsetLeft - (qtb.clientWidth - act.offsetWidth) / 2, behavior: 'smooth' });
     const v = views.find(x => x.dataset.view === n); document.title = v.dataset.title;
     v.classList.remove('enter'); void v.offsetWidth; v.classList.add('enter');
     try { window.scrollTo({ top: 0, behavior: 'instant' }); } catch (e) { window.scrollTo(0, 0); }
@@ -2208,6 +2281,30 @@ main { display: block; }
     const pics = PROJ[PKEY[key]], sts = PST[PKEY[key]];
     const setLab = i => { if (!lab) return; const s = sts[i] || sts[0]; lab.textContent = s[0]; lab.className = 'project-label ' + s[1]; };
     bg.innerHTML = ''; mount(card, bg, pics, name, setLab); setLab(0);
+  });
+
+  /* product details dialog */
+  const PINFO = {"bamburi": {"cat": "Cement", "spec": ["50kg bag", "Portland cement"], "desc": "Bamburi Portland cement in a 50kg bag, a staple for almost every build. The range includes Tembo for general-purpose work, Nguvu for structural and precast concrete, and Powermax for higher-strength construction.", "uses": ["Foundations, slabs and columns", "Block laying and plastering", "Screeding and floor finishes", "Structural and precast concrete"]}, "devki": {"cat": "Steel", "spec": ["Y12 ribbed bar", "6m length"], "desc": "Y12 ribbed steel reinforcement bar from Devki Steel, supplied in 6-metre lengths. The ribbed surface grips the concrete tightly, so the finished beam, column or slab can carry its load safely.", "uses": ["Beams, columns and slabs", "Foundations and ring beams", "Staircases and lintels", "Retaining walls and water tanks"]}, "cypress": {"cat": "Timber", "spec": ["2x4 inch", "3.6m length"], "desc": "Sawn cypress timber in the popular 2x4 size and 3.6m lengths. It is light to handle, easy to cut and nail, and a dependable all-round choice for site carpentry.", "uses": ["Roof trusses and purlins", "Formwork and props", "Partitions and ceiling frames", "Fences, shelves and general carpentry"]}, "ingco": {"cat": "Tools", "spec": ["Cordless", "Rechargeable battery"], "desc": "A rechargeable Ingco cordless drill kit. It drills and drives screws with no power cable, which makes it handy on site and around the home. Ask us what comes in the kit when you order.", "uses": ["Drilling wood, metal and plastic", "Driving screws quickly", "Fitting shelves, doors and hinges", "Site work and home repairs"]}, "crown": {"cat": "Paint", "spec": ["Interior and exterior", "Several finishes"], "desc": "Crown Paints for walls inside and out. Exterior Silk is made for weather-facing walls, Vinyl Matt Emulsion Xtreme is a stain-block finish for busy areas and kitchens, Silk Vinyl Emulsion gives a smooth premium look, and Ruff n Tuff is a tough textured coat. Some ranges are being restocked soon, so ask what is available today.", "uses": ["Exterior walls and fences", "Living rooms, bedrooms and kitchens", "Stain-resistant finish for busy areas", "Textured wall finishes"]}, "ppr": {"cat": "Plumbing", "spec": ["32mm", "4m length"], "desc": "PPR pipe, 32mm by 4m, from Davis & Shirtliff. PPR pipes are joined by heat fusion, which gives strong, leak-resistant joints, and they carry both hot and cold water.", "uses": ["Hot and cold water lines in homes", "Solar water heater connections", "Apartments and commercial buildings", "Replacing old water pipes"]}, "eac": {"cat": "Electrical", "spec": ["2.5mm² single core", "Copper, PVC insulated"], "desc": "2.5mm² single-core copper cable with PVC insulation, sold in colour-coded rolls (red, black and green-yellow) that make wiring easy to identify. We stock East African Cable and Evincab so you can choose by brand and budget.", "uses": ["Socket outlet circuits", "General house wiring", "Extensions and rewiring", "Workshops and commercial installations"]}, "mabati": {"cat": "Roofing", "spec": ["Gauge 30", "3m length"], "desc": "Mabati Rolling Mills roofing sheets in gauge 30 and 3-metre lengths, available in coloured and galvanised finishes. They are light, durable and quick to install.", "uses": ["Roofing for houses, shops and sheds", "Wall cladding", "Fencing and hoarding", "Carports and extensions"]}};
+  const dlg = document.createElement('dialog'); dlg.className = 'pdlg'; dlg.setAttribute('aria-labelledby', 'pdName');
+  dlg.innerHTML = '<button type="button" class="pdlg-close" aria-label="Close"><i class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-x"/></svg></i></button><div class="pdlg-body"><div class="pdlg-media"><img id="pdMain" alt=""><div class="pdlg-thumbs" id="pdThumbs"></div></div><div class="pdlg-info"><span class="pdlg-cat" id="pdCat"></span><h3 id="pdName"></h3><div class="pdlg-price" id="pdPrice"></div><p class="pdlg-desc" id="pdDesc"></p><h4>Common uses</h4><ul class="pdlg-uses" id="pdUses"></ul><div class="pdlg-spec" id="pdSpec"></div><a class="btn-primary pdlg-cta" id="pdOrder" target="_blank" rel="noopener"><i class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg></i>Order via WhatsApp</a></div></div>';
+  document.body.appendChild(dlg);
+  $('.pdlg-close', dlg).addEventListener('click', () => dlg.close());
+  dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+  dlg.addEventListener('close', () => { document.body.style.overflow = ''; });
+  document.addEventListener('click', e => {
+    const b = e.target.closest && e.target.closest('a.product-btn'); if (!b || !/details/i.test(b.textContent)) return;
+    e.preventDefault();
+    const card = b.closest('.product-card'), nm = $('.product-name', card).textContent.trim();
+    const key = Object.keys(PK).find(k => nm.toLowerCase().startsWith(PK[k])), info = PINFO[key], pics = PROD[key] || []; if (!info) return;
+    $('#pdName', dlg).textContent = nm; $('#pdCat', dlg).textContent = info.cat; $('#pdDesc', dlg).textContent = info.desc;
+    $('#pdPrice', dlg).textContent = ($('.product-price', card) || {}).textContent || '';
+    const ul = $('#pdUses', dlg); ul.innerHTML = ''; info.uses.forEach(u => { const li = document.createElement('li'); li.textContent = u; ul.appendChild(li); });
+    const sp = $('#pdSpec', dlg); sp.innerHTML = ''; info.spec.forEach(s => { const c = document.createElement('span'); c.textContent = s; sp.appendChild(c); });
+    const main = $('#pdMain', dlg), th = $('#pdThumbs', dlg); th.innerHTML = ''; main.src = pics[0] || ''; main.alt = nm;
+    if (pics.length > 1) pics.forEach((s, i) => { const t = document.createElement('button'); t.type = 'button'; t.setAttribute('aria-label', 'Photo ' + (i + 1)); if (!i) t.className = 'on'; t.innerHTML = '<img src="' + s + '" alt="">'; t.addEventListener('click', () => { main.src = s; [...th.children].forEach(x => x.classList.toggle('on', x === t)); }); th.appendChild(t); });
+    const wa = $('a.product-btn.primary', card); $('#pdOrder', dlg).href = wa ? wa.href : 'https://wa.me/254723331505';
+    document.body.style.overflow = 'hidden'; if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
+    $('.pdlg-body', dlg).scrollTop = 0; dlg.scrollTop = 0;
   });
 
   /* scroll reveal */
