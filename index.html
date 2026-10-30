@@ -1243,6 +1243,47 @@ main { display: block; }
 .lbx-dots span.on { width: 24px; background: var(--orange); }
 @media (max-width: 768px) { .lbx-nav { display: none; } .lbx-fig { padding: 60px 10px 70px; } }
 
+/* stat strip animation */
+.js .stat-strip:not(.in) .strip-item, .js .stat-strip:not(.in) .strip-cta { opacity: 0; transform: translateY(26px) scale(.96); }
+.stat-strip.in .strip-item, .stat-strip.in .strip-cta { animation: stripIn .75s cubic-bezier(.2,.7,.2,1) both; }
+.stat-strip.in .strip-item:nth-child(1) { animation-delay: .05s; }
+.stat-strip.in .strip-item:nth-child(2) { animation-delay: .2s; }
+.stat-strip.in .strip-item:nth-child(3) { animation-delay: .35s; }
+.stat-strip.in .strip-cta { animation-delay: .5s; }
+@keyframes stripIn { from { opacity: 0; transform: translateY(26px) scale(.96); } to { opacity: 1; transform: none; } }
+.strip-inner { position: relative; overflow: hidden; }
+.strip-inner::after { content: ""; position: absolute; top: 0; bottom: 0; width: 80px; left: -120px; background: linear-gradient(100deg, transparent, rgba(217,164,65,.28), transparent); transform: skewX(-18deg); pointer-events: none; }
+.stat-strip.in .strip-inner::after { animation: sweep 1.6s ease .3s 1 both; }
+@keyframes sweep { from { left: -120px; } to { left: 110%; } }
+.strip-item::after { content: ""; display: block; width: 0; height: 3px; margin-top: 10px; border-radius: 2px; background: linear-gradient(90deg, var(--orange), var(--accent-ink)); transition: width .8s ease 1s; }
+.stat-strip.in .strip-item::after { width: 34px; }
+.strip-item b.done { animation: numPop .55s ease; }
+@keyframes numPop { 0% { transform: scale(1); } 45% { transform: scale(1.14); color: var(--accent-ink); } 100% { transform: scale(1); } }
+.strip-item { transition: transform .25s ease; }
+.strip-item:hover { transform: translateY(-3px); }
+.strip-item:hover b { color: var(--accent-ink); }
+.strip-cta { position: relative; }
+.strip-cta::after { content: ""; position: absolute; inset: 0; border-radius: 10px; border: 2px solid #25d366; opacity: 0; animation: ping 2.4s ease-out 2s infinite; pointer-events: none; }
+@keyframes ping { 0% { transform: scale(1); opacity: .75; } 100% { transform: scale(1.16, 1.35); opacity: 0; } }
+@media (max-width: 768px) { .strip-item::after { margin-top: 8px; } .stat-strip.in .strip-item::after { width: 26px; } }
+@media (prefers-reduced-motion: reduce) {
+    .js .stat-strip:not(.in) .strip-item, .js .stat-strip:not(.in) .strip-cta { opacity: 1; transform: none; }
+    .stat-strip.in .strip-item, .stat-strip.in .strip-cta, .stat-strip.in .strip-inner::after, .strip-item b.done, .strip-cta::after { animation: none !important; }
+    .strip-item::after { width: 34px; transition: none; }
+}
+
+/* keep the stat strip animation alive on phones that have "reduce motion" on (everything else stays calm) */
+@media (prefers-reduced-motion: reduce) {
+    .js .stat-strip:not(.in) .strip-item, .js .stat-strip:not(.in) .strip-cta { opacity: 0 !important; transform: translateY(26px) scale(.96) !important; }
+    .stat-strip.in .strip-item, .stat-strip.in .strip-cta { animation: stripIn .75s cubic-bezier(.2,.7,.2,1) both !important; }
+    .stat-strip.in .strip-item:nth-child(1) { animation-delay: .05s !important; }
+    .stat-strip.in .strip-item:nth-child(2) { animation-delay: .2s !important; }
+    .stat-strip.in .strip-item:nth-child(3) { animation-delay: .35s !important; }
+    .stat-strip.in .strip-cta { animation-delay: .5s !important; }
+    .strip-item::after { transition: width .8s ease .5s !important; }
+    .strip-item b.done { animation: numPop .55s ease !important; }
+}
+
 .view[hidden] { display: none; }
 .view.enter { animation: viewIn .5s cubic-bezier(.2,.7,.2,1) both; }
 @keyframes viewIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
@@ -2192,6 +2233,7 @@ main { display: block; }
     const v = views.find(x => x.dataset.view === n); document.title = v.dataset.title;
     v.classList.remove('enter'); void v.offsetWidth; v.classList.add('enter');
     try { window.scrollTo({ top: 0, behavior: 'instant' }); } catch (e) { window.scrollTo(0, 0); }
+    document.dispatchEvent(new Event('viewshown'));
     if (push) { try { if (location.hash !== '#' + n) history.pushState(null, '', '#' + n); } catch (e) {} }
   };
   document.addEventListener('click', e => {
@@ -2368,16 +2410,29 @@ main { display: block; }
     });
   }
 
-  /* animated counters */
-  const counters = $$('[data-count]');
-  if (counters.length && 'IntersectionObserver' in window && !reduce) {
-    const co = new IntersectionObserver(es => es.forEach(e => {
-      if (!e.isIntersecting) return; co.unobserve(e.target);
-      const el = e.target, end = +el.dataset.count, suf = el.dataset.suffix || '', t0 = performance.now(), dur = 1500;
-      const tick = t => { const p = Math.min((t - t0) / dur, 1), v = Math.round(end * (1 - Math.pow(1 - p, 3))); el.textContent = v.toLocaleString('en-US') + suf; if (p < 1) requestAnimationFrame(tick); };
-      requestAnimationFrame(tick);
-    }), { threshold: 0.6 });
-    counters.forEach(c => co.observe(c));
+  /* stat strip: items pop in and numbers count up, replaying every time it scrolls into view.
+     Runs even when a phone has "reduce motion" switched on, because it is a short, gentle count-up. */
+  const strip = $('.stat-strip');
+  if (strip) {
+    const nums = $$('[data-count]', strip), fmt = (n, el) => n.toLocaleString('en-US') + (el.dataset.suffix || '');
+    const raf = [];
+    const run = () => nums.forEach((el, k) => {
+      const end = +el.dataset.count, dur = 1700, t0 = performance.now() + 250 + k * 180;
+      const tick = t => {
+        const p = Math.max(0, Math.min((t - t0) / dur, 1)), v = Math.round(end * (1 - Math.pow(1 - p, 4)));
+        el.textContent = fmt(v, el);
+        if (p < 1) raf[k] = requestAnimationFrame(tick); else el.classList.add('done');
+      };
+      cancelAnimationFrame(raf[k]); raf[k] = requestAnimationFrame(tick);
+    });
+    const reset = () => { raf.forEach(cancelAnimationFrame); strip.classList.remove('in'); nums.forEach(el => { el.classList.remove('done'); el.textContent = fmt(0, el); }); };
+    if ('IntersectionObserver' in window) {
+      reset();
+      new IntersectionObserver(es => es.forEach(e => {
+        if (e.isIntersecting && e.intersectionRatio >= 0.2) { if (!strip.classList.contains('in')) { strip.classList.add('in'); run(); } }
+        else if (e.intersectionRatio === 0) reset();
+      }), { threshold: [0, 0.2] }).observe(strip);
+    } else strip.classList.add('in');
   }
 
   /* hero slideshow: progress bar drives autoplay */
