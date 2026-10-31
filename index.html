@@ -1284,6 +1284,62 @@ main { display: block; }
     .strip-item b.done { animation: numPop .55s ease !important; }
 }
 
+/* product details pop-up: one centred column on every screen */
+.pdlg { position: fixed; inset: 0; margin: auto; height: fit-content; width: min(560px, calc(100vw - 24px)); max-width: calc(100vw - 24px); text-align: center; }
+.pdlg, .pdlg * { box-sizing: border-box; }
+.pdlg-body { display: block; }
+.pdlg-media { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 20px 20px 8px; width: 100%; }
+.pdlg-media #pdMain { display: block; width: 100%; max-width: 440px; aspect-ratio: 4 / 3; margin: 0 auto; }
+.pdlg-thumbs { justify-content: center; width: 100%; }
+.pdlg-info { width: 100%; padding: 14px 24px 26px; text-align: center; display: flex; flex-direction: column; align-items: center; }
+.pdlg-info h3 { padding-right: 0; margin: 6px 0 8px; font-size: 22px; text-wrap: balance; }
+.pdlg-desc { max-width: 440px; margin-left: auto; margin-right: auto; text-wrap: pretty; }
+.pdlg-uses { width: 100%; max-width: 380px; margin-left: auto; margin-right: auto; justify-items: center; }
+.pdlg-uses li { display: flex; align-items: flex-start; justify-content: center; gap: 10px; padding-left: 0; text-align: left; }
+.pdlg-uses li::before { position: static; flex: 0 0 10px; margin-top: 6px; }
+.pdlg-spec { justify-content: center; }
+.pdlg-cta { max-width: 380px; }
+@media (max-width: 768px) {
+    .pdlg-media { padding: 14px 14px 6px; }
+    .pdlg-media #pdMain { max-width: 100%; }
+    .pdlg-info { padding: 12px 18px 22px; }
+}
+
+/* tidy bullet column inside the centred pop-up */
+.pdlg-uses { width: fit-content; max-width: 100%; margin-left: auto; margin-right: auto; justify-items: start; }
+.pdlg-uses li { justify-content: flex-start; }
+
+/* ---------- phone audit fixes ---------- */
+/* very small phones: keep the menu button on screen */
+@media (max-width: 400px) {
+    .header-inner { padding: 10px 12px; gap: 8px; }
+    .logo { gap: 8px; min-width: 0; flex: 1 1 auto; }
+    .logo-icon { width: 38px; height: 38px; font-size: 18px; flex: 0 0 auto; }
+    .logo-text { font-size: 16px; min-width: 0; white-space: nowrap; }
+    .logo-text small, .logo-tagline { font-size: 10px; }
+    .header-actions { flex: 0 0 auto; gap: 6px; }
+    .whatsapp-btn { width: 40px; height: 40px; }
+    .mobile-menu-btn { padding: 8px; }
+}
+@media (max-width: 340px) { .logo-text { font-size: 14.5px; } .logo-icon { width: 34px; height: 34px; } .quick-tabs a { padding: 7px 13px; font-size: 13px; } }
+/* brand cards: equal heights, tidy rows */
+.brands-grid { align-items: stretch; }
+.brand-item { height: 100%; }
+.brand-name { min-height: 2.5em; display: flex; align-items: center; }
+@media (max-width: 768px) {
+    .brand-item { justify-content: flex-start; gap: 4px; }
+    .brand-name { justify-content: center; text-align: center; }
+    .brand-tag { flex-direction: column; gap: 4px; text-align: center; min-height: 3.2em; justify-content: flex-start; line-height: 1.3; }
+}
+/* product cards on phones: centred text, centred button labels */
+.product-btn { display: flex; align-items: center; justify-content: center; text-align: center; min-height: 48px; line-height: 1.25; }
+@media (max-width: 768px) {
+    .product-info { text-align: center; }
+    .product-price { justify-content: center; }
+    .product-name { min-height: 0; }
+    .product-actions { align-items: stretch; }
+}
+
 .view[hidden] { display: none; }
 .view.enter { animation: viewIn .5s cubic-bezier(.2,.7,.2,1) both; }
 @keyframes viewIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
