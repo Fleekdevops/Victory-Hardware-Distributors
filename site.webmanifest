@@ -1,0 +1,23 @@
+{
+  "name": "KEAF-G Hardware and Stores",
+  "short_name": "KEAF-G",
+  "description": "Building materials, hardware and construction essentials in Kikuyu, Kenya.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0B3C49",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
